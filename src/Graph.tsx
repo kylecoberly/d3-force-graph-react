@@ -4,12 +4,12 @@ import { Node, Link, Group } from './types';
 
 type Props = {
 	filter: string;
-	simulation: Simulation<Node, Link> & { groups: Group[] }
+	simulation: Simulation<Node, Link>;
+	groups: Group[]
 }
 
-function Graph({ filter, simulation }: Props) {
+function Graph({ filter, groups, simulation }: Props) {
 	const nodes = simulation.nodes()
-	const groups = simulation.groups
 
 	return (
 		<div className="Graph">

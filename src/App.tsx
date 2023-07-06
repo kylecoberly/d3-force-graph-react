@@ -5,7 +5,7 @@ import Graph from './Graph';
 
 import runSimulation from "./graph/simulation"
 
-const { nodes, links, groups } = data
+const { nodes, links, groups: rawGroups } = data
 
 function App() {
 	const [currentFilter, setCurrentFilter] = useState("all")
@@ -18,10 +18,10 @@ function App() {
 		setCurrentFilter(event.target.value)
 	}
 
-	const simulation = runSimulation({
+	const { simulation, groups } = runSimulation({
 		nodes: deepClone(nodes),
 		links: deepClone(links),
-		groups: deepClone(groups),
+		groups: deepClone(rawGroups),
 		currentFilter,
 	})
 
@@ -42,6 +42,7 @@ function App() {
 			<Graph
 				filter={currentFilter}
 				simulation={simulation}
+				groups={groups}
 			/>
 		</div>
 	);

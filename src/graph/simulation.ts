@@ -81,7 +81,7 @@ export default function runSimulation({
 	}
 
 	return {
-		...simulation as Simulation<Node, Link>,
+		simulation: simulation as Simulation<Node, Link>,
 		groups,
 	}
 }
