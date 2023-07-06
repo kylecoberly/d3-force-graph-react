@@ -41,8 +41,7 @@ function App() {
 			</form>
 			<Graph
 				filter={currentFilter}
-				nodes={nodes}
-				links={links}
+				simulation={simulation}
 			/>
 		</div>
 	);

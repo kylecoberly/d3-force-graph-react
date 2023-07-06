@@ -6,7 +6,7 @@ import attractGroups from "./forces/attract-groups"
 import shapeLinks from "./forces/shape-links"
 import createLinkForce from "./forces/links"
 import options from "./options"
-import { Node, Link, RawNode, RawGroup } from "../types"
+import { Node, Link, RawNode, RawGroup, Group } from "../types"
 
 const {
 	simulation: {
@@ -69,17 +69,21 @@ export default function runSimulation({
 	let count = tickCount
 	simulation.alpha(1)
 
+	// Casting to include coordinates from simulation
+	const tickedSimulation = simulation as Simulation<Node, Link>
+	const groups = addCoordinatesToGroup(tickedSimulation, rawGroups)
+
 	while (count > 0) {
 		simulation.tick()
 		count--
-		// Casting to include coordinates from simulation
-		const tickedSimulation = simulation as Simulation<Node, Link>
-		const groups = addCoordinatesToGroup(tickedSimulation, rawGroups)
 		attractGroups(tickedSimulation, groups)
 		shapeLinks(tickedSimulation)
 	}
 
-	return simulation
+	return {
+		...simulation as Simulation<Node, Link>,
+		groups,
+	}
 }
 
 function initializeSimulation() {
