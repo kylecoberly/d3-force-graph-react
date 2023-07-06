@@ -1,7 +1,7 @@
 import {
 	forceSimulation, forceManyBody, forceX, forceY, forceCollide
 } from "d3"
-import setGroups from "./set-groups.js"
+import getGroupsCoordinates from "./add-group-coordinates.js"
 import attractGroups from "./forces/attract-groups.js"
 import shapeLinks from "./forces/shape-links.js"
 import createLinkForce from "./forces/links.js"
@@ -38,7 +38,7 @@ const reference: {
 export default function runSimulation({
 	nodes,
 	links,
-	groups,
+	groups: rawGroups,
 	currentFilter,
 }: SimulationParameters) {
 	const currentNodeIds = nodes
@@ -66,7 +66,7 @@ export default function runSimulation({
 		.map(nodeId => nodes
 			.find(({ id }) => id === nodeId) || nodes[0]
 		)
-	reference.groups = groups
+	reference.groups = rawGroups
 	reference.currentFilter = currentFilter
 	reference.links = links
 	const linkForce = createLinkForce().links(links)
@@ -81,7 +81,8 @@ export default function runSimulation({
 	while (count > 0) {
 		simulation.tick()
 		count--
-		[setGroups, attractGroups, shapeLinks]
+		const groups = getGroupsCoordinates(nodes, rawGroups)
+		[attractGroups, shapeLinks]
 			.forEach(simulationUpdater => simulationUpdater(simulation, groups))
 	}
 
