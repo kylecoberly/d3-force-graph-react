@@ -1,17 +1,21 @@
-import { Node, Group, RawGroup } from "../types"
+import { Simulation } from "d3"
+import { Node, Group, RawGroup, CoordinatePair, Coordinate, Link } from "../types"
 
-export default function getGroupsCoordinates(nodes: Node[], groups: RawGroup[]) {
+export default function addCoordinatesToGroup(simulation: Simulation<Node, Link>, groups: RawGroup[]) {
+	const nodes = simulation.nodes()
+	const groupCenters = getCentroids(nodes)
+
 	return groups
-		.map<Pick<Group, "x" | "y" | "points">>(group => {
-			const groupCenters = getCentroids(nodes)
+		.map<Group>((group) => {
 			const { id } = group
 
 			return {
+				...group,
 				x: groupCenters[id].x,
 				y: groupCenters[id].y,
 				points: nodes
 					.filter(({ group }) => group === id)
-					.map<[number, number]>(({ x, y }: Node) => ([x, y])),
+					.map<CoordinatePair>(({ x, y }: Node) => ([x, y])),
 			}
 		})
 }
@@ -21,7 +25,7 @@ function getCentroids(nodes: Node[]) {
 
 	const centroids = Object
 		.entries(groupCoordinates)
-		.reduce<Record<string, { x: number, y: number }>>((centroids, [group, coordinates]) => {
+		.reduce<Record<string, Coordinate>>((centroids, [group, coordinates]) => {
 			const count = coordinates.length;
 			let tx = 0;
 			let ty = 0;
@@ -43,11 +47,10 @@ function getCentroids(nodes: Node[]) {
 }
 
 function getGroupCoordinates(nodes: Node[]) {
-	return nodes.reduce<Record<string, [number, number][]>>((groupCoordinates, node) => {
-		if (node.x && node.y) {
-			groupCoordinates[node.group] = groupCoordinates[node.group] || []
-			groupCoordinates[node.group].push([node.x, node.y])
-		}
+	return nodes.reduce<Record<string, CoordinatePair[]>>((groupCoordinates, node) => {
+		groupCoordinates[node.group] = groupCoordinates[node.group] || []
+		groupCoordinates[node.group].push([node.x, node.y])
+
 		return groupCoordinates
 	}, {})
 }

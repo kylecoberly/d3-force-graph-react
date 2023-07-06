@@ -19,7 +19,10 @@ function App() {
 	}
 
 	const simulation = runSimulation({
-		nodes, links, groups, currentFilter
+		nodes: deepClone(nodes),
+		links: deepClone(links),
+		groups: deepClone(groups),
+		currentFilter,
 	})
 
 	return (
@@ -69,3 +72,7 @@ function rerender(groupId) {
 }
 
 */
+
+function deepClone<T>(object: T) {
+	return JSON.parse(JSON.stringify(object)) as T
+}

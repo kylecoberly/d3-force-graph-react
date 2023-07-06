@@ -1,12 +1,12 @@
 import {
-	forceSimulation, forceManyBody, forceX, forceY, forceCollide
+	forceSimulation, forceManyBody, forceX, forceY, forceCollide, Simulation
 } from "d3"
-import getGroupsCoordinates from "./add-group-coordinates.js"
-import attractGroups from "./forces/attract-groups.js"
-import shapeLinks from "./forces/shape-links.js"
-import createLinkForce from "./forces/links.js"
+import addCoordinatesToGroup from "./add-coordinates-to-group"
+import attractGroups from "./forces/attract-groups"
+import shapeLinks from "./forces/shape-links"
+import createLinkForce from "./forces/links"
 import options from "./options"
-import { Node, Group, Link } from "../types.js"
+import { Node, Link, RawNode, RawGroup } from "../types"
 
 const {
 	simulation: {
@@ -20,20 +20,11 @@ const {
 } = options
 
 type SimulationParameters = {
-	nodes: Node[];
+	nodes: RawNode[];
 	links: Link[];
-	groups: Group[];
+	groups: RawGroup[];
 	currentFilter: string;
 }
-
-const simulation = initializeSimulation()
-
-const reference: {
-	nodes?: Node[];
-	links?: Link[];
-	groups?: Group[];
-	currentFilter?: string;
-} = {}
 
 export default function runSimulation({
 	nodes,
@@ -41,6 +32,8 @@ export default function runSimulation({
 	groups: rawGroups,
 	currentFilter,
 }: SimulationParameters) {
+	const simulation = initializeSimulation()
+
 	const currentNodeIds = nodes
 		.filter(node => currentFilter === "all" || node.group === currentFilter)
 		.map(({ id }) => id)
@@ -66,9 +59,7 @@ export default function runSimulation({
 		.map(nodeId => nodes
 			.find(({ id }) => id === nodeId) || nodes[0]
 		)
-	reference.groups = rawGroups
-	reference.currentFilter = currentFilter
-	reference.links = links
+
 	const linkForce = createLinkForce().links(links)
 	simulation.restart()
 	simulation
@@ -81,20 +72,22 @@ export default function runSimulation({
 	while (count > 0) {
 		simulation.tick()
 		count--
-		const groups = getGroupsCoordinates(nodes, rawGroups)
-		[attractGroups, shapeLinks]
-			.forEach(simulationUpdater => simulationUpdater(simulation, groups))
+		// Casting to include coordinates from simulation
+		const tickedSimulation = simulation as Simulation<Node, Link>
+		const groups = addCoordinatesToGroup(tickedSimulation, rawGroups)
+		attractGroups(tickedSimulation, groups)
+		shapeLinks(tickedSimulation)
 	}
 
 	return simulation
 }
 
 function initializeSimulation() {
-	return forceSimulation()
-		.force("charge", forceManyBody().strength(charge.initial))
-		.force("x", forceX(positionalForce.x))
-		.force("y", forceY(positionalForce.y))
-		.force("collision", forceCollide(collision.initial))
+	return forceSimulation<RawNode>()
+		.force("charge", forceManyBody<RawNode>().strength(charge.initial))
+		.force("x", forceX<RawNode>(positionalForce.x))
+		.force("y", forceY<RawNode>(positionalForce.y))
+		.force("collision", forceCollide<RawNode>(collision.initial))
 }
 
 function getUnique(array: unknown[]) {
