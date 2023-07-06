@@ -1,3 +1,5 @@
+import { Simulation } from "d3"
+import { Node, Link, Group, Coordinate } from "../../types"
 import simulationOptions from "../options"
 
 const {
@@ -12,10 +14,10 @@ const {
 	},
 } = simulationOptions
 
-export default function attractGroups(simulation) {
+export default function attractGroups(simulation: Simulation<Node, Link>, groups: Group[]) {
 	const nodes = simulation.nodes()
 	const alpha = simulation.alpha()
-	const groupCenters = simulation.groups.reduce((centers, group) => {
+	const groupCenters = groups.reduce<Record<string, { x: number, y: number }>>((centers, group) => {
 		centers[group.id] = {
 			x: group.x,
 			y: group.y,
@@ -41,7 +43,7 @@ export default function attractGroups(simulation) {
 	})
 }
 
-function getDistance({ x: x1, y: y1 }, { x: x2, y: y2 }) {
+function getDistance({ x: x1, y: y1 }: Coordinate, { x: x2, y: y2 }: Coordinate) {
 	const positionDifferential = {
 		x: x1 > x2 ? x1 - x2 : x2 - x1,
 		y: y1 > y2 ? y1 - y2 : y2 - y1,

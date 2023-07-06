@@ -7,10 +7,8 @@ export type RawGroup = {
 	"foreground-color": string;
 }
 
-export type Group = RawGroup & {
-	x: number;
-	y: number;
-	points: [number, number][];
+export type Group = RawGroup & Coordinate & {
+	points: CoordinatePair[];
 }
 
 export type RawNode = {
@@ -20,12 +18,18 @@ export type RawNode = {
 	complete?: boolean;
 } & SimulationNodeDatum
 
-export type Node = RawNode & {
-	x: number;
-	y: number;
+export type Node = RawNode & Coordinate & {
+	groupCenter?: Coordinate;
 } & SimulationNodeDatum
 
 export type Link = {
 	source: string;
 	target: string;
 } & SimulationLinkDatum<Node>
+
+export type Coordinate = {
+	x: number;
+	y: number;
+}
+
+export type CoordinatePair = [number, number]
