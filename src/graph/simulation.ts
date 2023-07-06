@@ -5,7 +5,8 @@ import setGroups from "./set-groups.js"
 import attractGroups from "./forces/attract-groups.js"
 import shapeLinks from "./forces/shape-links.js"
 import createLinkForce from "./forces/links.js"
-import options from "./options.js"
+import options from "./options"
+import { Node, Group, Link } from "../types.js"
 
 const {
 	simulation: {
@@ -18,20 +19,60 @@ const {
 	},
 } = options
 
+type SimulationParameters = {
+	nodes: Node[];
+	links: Link[];
+	groups: Group[];
+	currentFilter: string;
+}
+
+const simulation = initializeSimulation()
+
+const reference: {
+	nodes?: Node[];
+	links?: Link[];
+	groups?: Group[];
+	currentFilter?: string;
+} = {}
+
 export default function runSimulation({
 	nodes,
 	links,
 	groups,
 	currentFilter,
-	simulation = initializeSimulation()
-}) {
-	simulation.groups = groups
-	simulation.currentFilter = currentFilter
-	simulation.links = links
+}: SimulationParameters) {
+	const currentNodeIds = nodes
+		.filter(node => currentFilter === "all" || node.group === currentFilter)
+		.map(({ id }) => id)
+
+	const normalizedLinks = currentFilter === "all"
+		? deepClone<Link[]>(links)
+		: deepClone<Link[]>(links)
+			.filter(({ source, target }) => {
+				return [
+					source,
+					target,
+				].some(node => currentNodeIds.includes(node))
+			})
+
+	const linkedNodeIds = normalizedLinks
+		.flatMap(({ source, target }) => {
+			return ([
+				source,
+				target,
+			])
+		})
+	const normalizedNodes = getUnique(linkedNodeIds)
+		.map(nodeId => nodes
+			.find(({ id }) => id === nodeId) || nodes[0]
+		)
+	reference.groups = groups
+	reference.currentFilter = currentFilter
+	reference.links = links
 	const linkForce = createLinkForce().links(links)
 	simulation.restart()
 	simulation
-		.nodes(nodes)
+		.nodes(normalizedNodes)
 		.force("link", linkForce)
 		.stop()
 	let count = tickCount
@@ -41,7 +82,7 @@ export default function runSimulation({
 		simulation.tick()
 		count--
 		[setGroups, attractGroups, shapeLinks]
-			.forEach(simulationUpdater => simulationUpdater(simulation))
+			.forEach(simulationUpdater => simulationUpdater(simulation, groups))
 	}
 
 	return simulation
@@ -53,4 +94,12 @@ function initializeSimulation() {
 		.force("x", forceX(positionalForce.x))
 		.force("y", forceY(positionalForce.y))
 		.force("collision", forceCollide(collision.initial))
+}
+
+function getUnique(array: unknown[]) {
+	return Array.from((new Set(array)))
+}
+
+function deepClone<T>(object: T) {
+	return JSON.parse(JSON.stringify(object)) as T
 }

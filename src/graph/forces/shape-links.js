@@ -1,5 +1,5 @@
 import { forceManyBody, forceLink, forceCollide } from "d3"
-import simulationOptions from "../options.js"
+import simulationOptions from "../options"
 const {
 	simulation: {
 		alphaCutoff,

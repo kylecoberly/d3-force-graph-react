@@ -1,5 +1,5 @@
 import { forceLink } from "d3"
-import options from "../options.js"
+import options from "../options"
 
 const {
 	forces: {

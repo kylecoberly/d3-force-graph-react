@@ -1,7 +1,7 @@
-export default function setGroups(simulation) {
+export default function setGroups(simulation, groups) {
 	const nodes = simulation.nodes()
 
-	simulation.groups
+	groups
 		.forEach(group => {
 			const groupCenters = getCentroids(nodes)
 			const { id } = group

@@ -1,4 +1,4 @@
-import simulationOptions from "../options.js"
+import simulationOptions from "../options"
 
 const {
 	simulation: {
@@ -29,7 +29,7 @@ export default function attractGroups(simulation) {
 			y: groupCenters[node.group].y,
 		}
 
-		const distanceToGroup = getDistance(node.groupCenter, { x, y } = node)
+		const distanceToGroup = getDistance(node.groupCenter, { x: node.x, y: node.y })
 		const adjustedDistanceCutoff = (alpha < alphaCutoff)
 			? groupDistance.cutoff + (groupDistance.rate * (alphaCutoff - alpha))
 			: groupDistance.cutoff
