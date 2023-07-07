@@ -3,7 +3,11 @@ import Arrow from './elements/Arrow';
 import Circle from './elements/Circle';
 import Node from './elements/Node';
 import './Graph.scss';
-import { Node as NodeType, RawLink, Group } from './types';
+import { Node as NodeType, RawLink, Group, RawNode } from './types';
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
+import { useState } from 'react';
+import NodeDetails from './NodeDetails';
+import classNames from 'classnames';
 
 const options = {
 	chart: {
@@ -35,57 +39,108 @@ type Props = {
 	links: RawLink[];
 }
 
-// svg.call(resetZoom, zoom)
-//
-// window.addEventListener("resize", () => {
-// 	resetZoom(select("#container svg"), zoom)
-// })
-
-// function attachResetFocus(svg) {
-// 	svg.on("click", (event) => {
-// 		if (event.target.tagName !== "use") {
-// 			select("#container .details")
-// 				.classed("open", false)
-// 		}
-// 	})
-// }
-
 function Graph({ filter, groups, links, simulation }: Props) {
 	const nodes = simulation.nodes()
+	const [open, setOpen] = useState(false)
+	const [currentNode, setCurrentNode] = useState<RawNode | null>(null)
+
+	const zoomTo = (zoomToElement: (id: string) => void) => (node: RawNode) => {
+		const formattedId = node.id.replace(/\s/g, "-")
+		setCurrentNode(node)
+		setOpen(true)
+		zoomToElement(formattedId)
+	}
+
+	const resetZoom = (resetTransform: () => void) => () => {
+		setCurrentNode(null)
+		setOpen(false)
+		resetTransform()
+	}
 
 	return (
 		<div className="Graph">
-			<div id="container">
-				<div className="details"></div>
-				<svg
-					viewBox={`
-						${Math.round(options.chart.width / -2)},
-						${Math.round(options.chart.height / -2)},
-						${options.chart.width},
-						${options.chart.height}
-					`.replace(/\s/g, "")}
-					preserveAspectRatio="xMinYMin meet"
-				>
-					<defs>
-						<Circle />
-						<Arrow />
-					</defs>
-					<g
-						className="bounds"
-						width={options.chart.width}
-						height={options.chart.width}
-					>
-						{nodes.map((node) => (
-							<Node
-								key={node.id}
-								node={node}
-								links={links}
-							/>
-						))}
-					</g>
-				</svg>
-			</div>
-		</div >
+			<TransformWrapper
+				initialScale={4}
+				initialPositionX={Math.round(options.chart.width * -1.5)}
+				initialPositionY={Math.round(options.chart.height * -1.5)}
+				minPositionX={Math.round(options.chart.width / 2)}
+				maxPositionX={Math.round(options.chart.width / -2)}
+				minPositionY={Math.round(options.chart.height / 2)}
+				maxPositionY={Math.round(options.chart.height / -2)}
+				minScale={options.zoom.minimum}
+				maxScale={options.zoom.maximum}
+				centerZoomedOut={true}
+				centerOnInit={true}
+				disablePadding={true}
+				wheel={{
+					step: 0.8,
+					smoothStep: 0.04,
+				}}
+			>
+				{({ zoomToElement, resetTransform }) => (
+					<div id="container">
+						<div
+							className={classNames({
+								NodeDetails: true,
+								details: true,
+								open,
+							})}
+						>
+							{
+								currentNode && <NodeDetails node={currentNode} />
+							}
+						</div>
+						<TransformComponent>
+							<svg
+								width={`${options.chart.width}px`}
+								height={`${options.chart.height}px`}
+								viewBox={`
+								${Math.round(options.chart.width / -2)},
+								${Math.round(options.chart.height / -2)},
+								${options.chart.width},
+								${options.chart.height}
+							`.replace(/\s/g, "")}
+								preserveAspectRatio="xMinYMin meet"
+							>
+								<defs>
+									<Circle />
+									<Arrow />
+								</defs>
+								<g
+									className="bounds"
+									width={options.chart.width}
+									height={options.chart.height}
+								>
+									{nodes.map((node) => (
+										<Node
+											key={node.id}
+											node={node}
+											links={links}
+											zoomTo={zoomTo(zoomToElement)}
+										/>
+									))}
+								</g>
+							</svg>
+						</TransformComponent>
+						<svg
+							id="reset"
+							width="40px"
+							height="40px"
+							viewBox="-10 -10 20 20"
+						>
+							<g>
+								<circle
+									cx={0}
+									cy={0}
+									r={4}
+									onClick={resetZoom(resetTransform)}
+								/>
+							</g>
+						</svg>
+					</div>
+				)}
+			</TransformWrapper>
+		</div>
 	);
 }
 

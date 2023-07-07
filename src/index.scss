@@ -189,6 +189,19 @@ path.disabled {
 	stroke-width: 0;
 }
 
+#reset {
+	position: absolute;
+	top: 90%;
+	left: 5%;
+	z-index: 10;
+	cursor: pointer;
+	circle {
+		stroke-width: 0.1;
+		stroke: $grey-3;
+		fill: $failure-5;
+	}
+}
+
 circle:not(.critical) {
 	fill: $white;
 }
@@ -203,6 +216,7 @@ circle:not(.critical) {
 	padding: 16px;
 	box-shadow: 0 0 20px hsl(0, 0%, 70%);
 	transition: right 0.5s;
+	z-index: 10;
 }
 
 .details.open {

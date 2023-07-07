@@ -1,25 +1,26 @@
-import { RawLink, Node as NodeType } from "../types";
+import { RawLink, Node as NodeType, RawNode } from "../types";
 import classnames from "classnames";
+import { MouseEvent } from "react";
 
 type Props = {
 	node: NodeType;
 	links: RawLink[];
+	zoomTo: (node: RawNode) => void;
 }
 
-export default function Node({ node, links }: Props) {
+export default function Node({ node, links, zoomTo }: Props) {
 	const nodeDiameter = 4
 	const linkCounts = getLinkCounts(links)
 	const { id, complete, in_progress, critical } = node
+	const formattedId = id.replace(/\s/g, "-")
 
-	const handleClick = () => {
-		// Focus node
-		//const svg = select("#container svg")
-		//centerNode({ element: svg, zoom, x: d.x, y: d.y, settings })
-		//showDetails(d)
+	const handleClick = (event: MouseEvent) => {
+		zoomTo(node)
 	}
 
 	return (
 		<g
+			id={formattedId}
 			className={classnames({
 				node: true,
 				Node: true,
@@ -29,7 +30,7 @@ export default function Node({ node, links }: Props) {
 				"in-progress": in_progress,
 				critical: critical,
 			})}
-			onClick={handleClick}
+			onClickCapture={handleClick}
 		>
 			<use
 				width={nodeDiameter}
@@ -65,28 +66,3 @@ function getLinkCounts(links: RawLink[]) {
 		return counts
 	}, {})
 }
-
-/*
-function centerNode({ element, zoom, x, y, settings }) {
-	const { scale, duration } = settings
-	const transform = zoomIdentity
-		.scale(scale)
-		.translate(-x, -y)
-
-	element
-		// Do this with CSS animations instead instead
-		// A transition is just calling these with tweened values lots of times per second!
-		// .transition()
-		// .duration(duration)
-		.call(zoom.transform, transform)
-}
-
-function showDetails({ id }) {
-	select("#container .details")
-		.classed("open", true)
-		.html(`
-			<h2>${id}</h2>
-			<p>${id}</p>
-		`)
-}
-*/
