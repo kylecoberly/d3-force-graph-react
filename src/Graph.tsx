@@ -8,6 +8,7 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { useState } from 'react';
 import NodeDetails from './NodeDetails';
 import classNames from 'classnames';
+import Link from './elements/Link';
 
 const options = {
 	chart: {
@@ -43,6 +44,21 @@ function Graph({ filter, groups, links, simulation }: Props) {
 	const nodes = simulation.nodes()
 	const [open, setOpen] = useState(false)
 	const [currentNode, setCurrentNode] = useState<RawNode | null>(null)
+
+	const nodeMap = nodes.reduce<Record<string, NodeType>>((nodeMap, node) => {
+		return {
+			...nodeMap,
+			[node.id]: node,
+		}
+	}, {})
+
+	const hydratedLinks = links.map(({ source, target }) => {
+		return {
+			id: `${source}-${target}`,
+			source: nodeMap[source],
+			target: nodeMap[target],
+		}
+	})
 
 	const zoomTo = (zoomToElement: (id: string) => void) => (node: RawNode) => {
 		const formattedId = node.id.replace(/\s/g, "-")
@@ -117,6 +133,13 @@ function Graph({ filter, groups, links, simulation }: Props) {
 											node={node}
 											links={links}
 											zoomTo={zoomTo(zoomToElement)}
+										/>
+									))}
+									{hydratedLinks.map(({ id, source, target }) => (
+										<Link
+											key={id}
+											source={source}
+											target={target}
 										/>
 									))}
 								</g>

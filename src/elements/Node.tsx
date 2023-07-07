@@ -1,6 +1,7 @@
 import { RawLink, Node as NodeType, RawNode } from "../types";
 import classnames from "classnames";
 import { MouseEvent } from "react";
+import "./Node.scss"
 
 type Props = {
 	node: NodeType;
@@ -22,7 +23,6 @@ export default function Node({ node, links, zoomTo }: Props) {
 		<g
 			id={formattedId}
 			className={classnames({
-				node: true,
 				Node: true,
 				open: linkCounts[id]?.to === 0,
 				closed: linkCounts[id]?.to !== 0,

@@ -1,0 +1,43 @@
+@use "../colors.scss";
+
+.Node {
+	cursor: pointer;
+	opacity: 1;
+	.label {
+		fill: colors.$grey-3;
+		font-size: 0.1em;
+		stroke-width: 0;
+		&.disabled {
+			fill: colors.$grey-9;
+			font-size: 0.15em;
+		}
+	}
+
+	&.closed {
+		stroke: colors.$grey-8;
+		stroke-width: 0.03em;
+		fill: colors.$grey-8;
+	}
+
+	&.open {
+		stroke: colors.$success-7;
+		stroke-width: 0.03em;
+		fill: colors.$success-7;
+	}
+
+	&.in-progress {
+		stroke: colors.$warning-6;
+		stroke-width: 0.03em;
+		fill: colors.$warning-6;
+	}
+
+	&.completed {
+		stroke: colors.$primary-5;
+		stroke-width: 0.03em;
+		fill: colors.$primary-5;
+	}
+
+	&.critical {
+		stroke-width: 0;
+	}
+}

@@ -1,18 +1,32 @@
-import classnames from "classnames";
+import classNames from "classnames";
 import { Node } from "../types";
+import "./Link.scss"
 
 type Props = {
 	source: Node;
 	target: Node;
 }
 
+function toDegrees(radians: number) {
+	return radians * (180 / Math.PI)
+}
+
 export default function Link({ source, target }: Props) {
+	const dx = target.x - source.x
+	const dy = target.y - source.y
+
+	const angle = toDegrees(Math.atan2(dy, dx))
+	const offset = {
+		x: -1,
+		y: 0,
+	}
+
 	return (
 		<g
-			className={classnames({
-				link: true,
+			className={classNames({
 				Link: true,
 			})}
+			transform="translate(2,2)"
 		>
 			<path
 				id={`link-${generateLinkId({ source, target })}`}
@@ -23,6 +37,7 @@ export default function Link({ source, target }: Props) {
 				height="2"
 				href="#arrow"
 				className="ant"
+				transform={`translate(${offset.x}, ${offset.y}) rotate(${angle})`}
 			>
 				<animateMotion
 					dur="0.5s"

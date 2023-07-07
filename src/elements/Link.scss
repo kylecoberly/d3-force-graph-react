@@ -1,0 +1,11 @@
+@use "../colors.scss";
+
+.Link {
+	stroke: red;
+	stroke-width: 0.1px;
+	.ant {
+		stroke: colors.$primary-7 !important;
+		stroke-width: 0.1px;
+		font-size: 0.1em;
+	}
+}

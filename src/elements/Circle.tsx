@@ -1,3 +1,5 @@
+import "./Circle.scss"
+
 export default function Circle() {
 	return (
 		<symbol
