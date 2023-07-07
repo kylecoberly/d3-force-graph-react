@@ -16,15 +16,21 @@ export type RawNode = {
 	group: string;
 	critical?: boolean;
 	complete?: boolean;
+	in_progress?: boolean;
 } & SimulationNodeDatum
 
 export type Node = RawNode & Coordinate & {
 	groupCenter?: Coordinate;
 } & SimulationNodeDatum
 
-export type Link = {
+export type RawLink = {
 	source: string;
 	target: string;
+} & SimulationLinkDatum<Node>
+
+export type Link = {
+	source: Node;
+	target: Node;
 } & SimulationLinkDatum<Node>
 
 export type Coordinate = {

@@ -6,7 +6,7 @@ import attractGroups from "./forces/attract-groups"
 import shapeLinks from "./forces/shape-links"
 import createLinkForce from "./forces/links"
 import options from "./options"
-import { Node, Link, RawNode, RawGroup, Group } from "../types"
+import { Node, RawLink, RawNode, RawGroup, Group } from "../types"
 
 const {
 	simulation: {
@@ -21,7 +21,7 @@ const {
 
 type SimulationParameters = {
 	nodes: RawNode[];
-	links: Link[];
+	links: RawLink[];
 	groups: RawGroup[];
 	currentFilter: string;
 }
@@ -39,8 +39,8 @@ export default function runSimulation({
 		.map(({ id }) => id)
 
 	const normalizedLinks = currentFilter === "all"
-		? deepClone<Link[]>(links)
-		: deepClone<Link[]>(links)
+		? deepClone<RawLink[]>(links)
+		: deepClone<RawLink[]>(links)
 			.filter(({ source, target }) => {
 				return [
 					source,
@@ -70,7 +70,7 @@ export default function runSimulation({
 	simulation.alpha(1)
 
 	// Casting to include coordinates from simulation
-	const tickedSimulation = simulation as Simulation<Node, Link>
+	const tickedSimulation = simulation as Simulation<Node, RawLink>
 	const groups = addCoordinatesToGroup(tickedSimulation, rawGroups)
 
 	while (count > 0) {
@@ -81,7 +81,7 @@ export default function runSimulation({
 	}
 
 	return {
-		simulation: simulation as Simulation<Node, Link>,
+		simulation: simulation as Simulation<Node, RawLink>,
 		groups,
 	}
 }

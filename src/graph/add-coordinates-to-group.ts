@@ -1,7 +1,7 @@
 import { Simulation } from "d3"
-import { Node, Group, RawGroup, CoordinatePair, Coordinate, Link } from "../types"
+import { Node, Group, RawGroup, CoordinatePair, Coordinate, RawLink } from "../types"
 
-export default function addCoordinatesToGroup(simulation: Simulation<Node, Link>, groups: RawGroup[]) {
+export default function addCoordinatesToGroup(simulation: Simulation<Node, RawLink>, groups: RawGroup[]) {
 	const nodes = simulation.nodes()
 	const groupCenters = getCentroids(nodes)
 

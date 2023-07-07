@@ -1,5 +1,5 @@
 import { forceLink } from "d3"
-import { Link, Node } from "../../types"
+import { RawLink, Node } from "../../types"
 import options from "../options"
 
 const {
@@ -17,7 +17,7 @@ const {
 } = options
 
 export default function createLinkForce() {
-	return forceLink<Node, Link>()
+	return forceLink<Node, RawLink>()
 		.id(({ id }) => id)
 		.distance(linkDistance.initial)
 		.strength(({ source, target }) => (

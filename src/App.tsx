@@ -42,6 +42,7 @@ function App() {
 			<Graph
 				filter={currentFilter}
 				simulation={simulation}
+				links={links}
 				groups={groups}
 			/>
 		</div>
@@ -49,29 +50,6 @@ function App() {
 }
 
 export default App;
-
-/*
-import render from "./chart/rendering/render.js"
-
-renderFilters(groups)
-
-let simulation
-rerender("all")
-
-function rerender(groupId) {
-
-	simulation = runSimulation({
-		simulation,
-		nodes: deepClone(normalizedNodes),
-		links: deepClone(normalizedLinks),
-		groups: deepClone(groups),
-		currentFilter: groupId,
-	})
-
-	render(simulation)
-}
-
-*/
 
 function deepClone<T>(object: T) {
 	return JSON.parse(JSON.stringify(object)) as T

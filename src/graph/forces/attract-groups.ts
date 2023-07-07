@@ -1,5 +1,5 @@
 import { Simulation } from "d3"
-import { Node, Link, Group, Coordinate } from "../../types"
+import { Node, RawLink, Group, Coordinate } from "../../types"
 import simulationOptions from "../options"
 
 const {
@@ -14,7 +14,7 @@ const {
 	},
 } = simulationOptions
 
-export default function attractGroups(simulation: Simulation<Node, Link>, groups: Group[]) {
+export default function attractGroups(simulation: Simulation<Node, RawLink>, groups: Group[]) {
 	const nodes = simulation.nodes()
 	const alpha = simulation.alpha()
 	const groupCenters = groups.reduce<Record<string, { x: number, y: number }>>((centers, group) => {
