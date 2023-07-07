@@ -36,14 +36,14 @@ export default function Node({ node, links, zoomTo }: Props) {
 				width={nodeDiameter}
 				height={nodeDiameter}
 				href="#circle"
-				x={node.x}
-				y={node.y}
+				x={node.x - nodeDiameter / 2}
+				y={node.y - nodeDiameter / 2}
 			/>
 			<text
 				className="label"
 				textAnchor="middle"
 				x={node.x}
-				y={node.y}
+				y={node.y + 4}
 			>{id}</text>
 		</g >
 	)
