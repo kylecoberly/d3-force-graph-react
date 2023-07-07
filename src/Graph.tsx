@@ -127,19 +127,19 @@ function Graph({ filter, groups, links, simulation }: Props) {
 									width={options.chart.width}
 									height={options.chart.height}
 								>
+									{hydratedLinks.map(({ id, source, target }) => (
+										<Link
+											key={id}
+											source={source}
+											target={target}
+										/>
+									))}
 									{nodes.map((node) => (
 										<Node
 											key={node.id}
 											node={node}
 											links={links}
 											zoomTo={zoomTo(zoomToElement)}
-										/>
-									))}
-									{hydratedLinks.map(({ id, source, target }) => (
-										<Link
-											key={id}
-											source={source}
-											target={target}
 										/>
 									))}
 								</g>

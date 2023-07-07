@@ -18,7 +18,7 @@ export default function Link({ source, target }: Props) {
 	const angle = toDegrees(Math.atan2(dy, dx))
 	const offset = {
 		x: -1,
-		y: 0,
+		y: -1,
 	}
 
 	return (
@@ -37,7 +37,10 @@ export default function Link({ source, target }: Props) {
 				height="2"
 				href="#arrow"
 				className="ant"
-				transform={`translate(${offset.x}, ${offset.y}) rotate(${angle})`}
+				transform={`
+					rotate(${angle})
+					translate(${offset.x}, ${offset.y})
+				`.replace(/\s/g, "")}
 			>
 				<animateMotion
 					dur="0.5s"
