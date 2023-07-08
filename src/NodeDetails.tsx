@@ -1,5 +1,5 @@
-import './Graph.scss';
-import { RawNode } from './types';
+import "./NodeDetails.scss";
+import { RawNode } from "./types";
 
 type Props = {
 	node: RawNode;

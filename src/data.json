@@ -333,10 +333,6 @@
 		},
 		{
 			"source": "Quality",
-			"target": "Documentation"
-		},
-		{
-			"source": "Quality",
 			"target": "Security"
 		},
 		{
@@ -382,10 +378,6 @@
 		{
 			"source": "Big O",
 			"target": "Refactoring Data Types"
-		},
-		{
-			"source": "Types",
-			"target": "TypeScript Simple Types"
 		},
 		{
 			"source": "Setup TypeScript",
@@ -614,10 +606,6 @@
 		{
 			"source": "Playwright Test",
 			"target": "Browser Performance Testing"
-		},
-		{
-			"source": "Intro to Refactoring",
-			"target": "Renaming"
 		},
 		{
 			"source": "Renaming",

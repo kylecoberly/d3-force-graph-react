@@ -26,7 +26,6 @@ export default function Link({ source, target }: Props) {
 			className={classNames({
 				Link: true,
 			})}
-			transform="translate(2,2)"
 		>
 			<path
 				id={`link-${generateLinkId({ source, target })}`}
