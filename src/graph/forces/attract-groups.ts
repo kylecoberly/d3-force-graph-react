@@ -19,8 +19,8 @@ export default function attractGroups(simulation: Simulation<Node, RawLink>, gro
 	const alpha = simulation.alpha()
 	const groupCenters = groups.reduce<Record<string, { x: number, y: number }>>((centers, group) => {
 		centers[group.id] = {
-			x: group.x,
-			y: group.y,
+			x: group.center[0],
+			y: group.center[1],
 		}
 		return centers
 	}, {})

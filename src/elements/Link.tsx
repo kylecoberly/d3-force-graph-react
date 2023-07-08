@@ -7,10 +7,6 @@ type Props = {
 	target: Node;
 }
 
-function toDegrees(radians: number) {
-	return radians * (180 / Math.PI)
-}
-
 export default function Link({ source, target }: Props) {
 	const dx = target.x - source.x
 	const dy = target.y - source.y
@@ -58,4 +54,8 @@ export function generateLinkPath({ source, target }: { source: Node; target: Nod
 
 function generateLinkId({ source, target }: { source: Node; target: Node; }) {
 	return `${source.id}-${target.id}`.replaceAll(" ", "").trim()
+}
+
+function toDegrees(radians: number) {
+	return radians * (180 / Math.PI)
 }

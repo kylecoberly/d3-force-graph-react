@@ -3,12 +3,14 @@ import Arrow from './elements/Arrow';
 import Circle from './elements/Circle';
 import Node from './elements/Node';
 import './Graph.scss';
-import { Node as NodeType, RawLink, Group, RawNode } from './types';
+import { Node as NodeType, RawLink, Group as GroupType, RawNode } from './types';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { useState } from 'react';
 import NodeDetails from './NodeDetails';
 import classNames from 'classnames';
 import Link from './elements/Link';
+import addCoordinatesToGroup from './graph/add-coordinates-to-group';
+import Group from './elements/Group';
 
 const options = {
 	chart: {
@@ -36,14 +38,16 @@ const options = {
 type Props = {
 	filter: string;
 	simulation: Simulation<NodeType, RawLink>;
-	groups: Group[];
+	groups: GroupType[];
 	links: RawLink[];
 }
 
-function Graph({ filter, groups, links, simulation }: Props) {
+function Graph({ filter, groups: rawGroups, links, simulation }: Props) {
 	const nodes = simulation.nodes()
 	const [open, setOpen] = useState(false)
 	const [currentNode, setCurrentNode] = useState<RawNode | null>(null)
+
+	const groups = addCoordinatesToGroup(simulation, rawGroups)
 
 	const nodeMap = nodes.reduce<Record<string, NodeType>>((nodeMap, node) => {
 		return {
@@ -127,6 +131,13 @@ function Graph({ filter, groups, links, simulation }: Props) {
 									width={options.chart.width}
 									height={options.chart.height}
 								>
+									{groups.map((group) => (
+										<Group
+											key={group.id}
+											group={group}
+											currentFilter={filter}
+										/>
+									))}
 									{hydratedLinks.map(({ id, source, target }) => (
 										<Link
 											key={id}

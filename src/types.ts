@@ -7,8 +7,9 @@ export type RawGroup = {
 	"foreground-color": string;
 }
 
-export type Group = RawGroup & Coordinate & {
+export type Group = RawGroup & {
 	points: CoordinatePair[];
+	center: CoordinatePair;
 }
 
 export type RawNode = {
@@ -36,6 +37,11 @@ export type Link = {
 export type Coordinate = {
 	x: number;
 	y: number;
+}
+
+export type Vector = {
+	p: CoordinatePair;
+	v: CoordinatePair;
 }
 
 export type CoordinatePair = [number, number]
