@@ -6,7 +6,7 @@ import attractGroups from "./forces/attract-groups"
 import shapeLinks from "./forces/shape-links"
 import createLinkForce from "./forces/links"
 import options from "./options"
-import { Node, RawLink, RawNode, RawGroup, Group } from "../types"
+import { Node, RawLink, RawNode, RawGroup } from "../types"
 
 const {
 	simulation: {

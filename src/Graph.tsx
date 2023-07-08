@@ -42,12 +42,10 @@ type Props = {
 	links: RawLink[];
 }
 
-function Graph({ filter, groups: rawGroups, links, simulation }: Props) {
+function Graph({ filter, groups, links, simulation }: Props) {
 	const nodes = simulation.nodes()
 	const [open, setOpen] = useState(false)
 	const [currentNode, setCurrentNode] = useState<RawNode | null>(null)
-
-	const groups = addCoordinatesToGroup(simulation, rawGroups)
 
 	const nodeMap = nodes.reduce<Record<string, NodeType>>((nodeMap, node) => {
 		return {
