@@ -16,24 +16,27 @@ export default function Group({ group, currentFilter }: Props) {
 		"foreground-color": foregroundColor,
 		points,
 		center,
+		active,
 	} = group
 	const hullPoints = getSmoothHull(points)
-	const fillColor = (id === currentFilter || currentFilter === "all") ? backgroundColor : "none"
+	const fillColor = (id === currentFilter || currentFilter === "all")
+		? backgroundColor
+		: "none"
 
 	return (
-		<g className="Group">
+		<g
+			className={classNames({
+				Group: true,
+				"inactive": !active,
+			})}
+		>
 			<path
 				d={hullPoints}
 				fill={fillColor}
-				className={classNames({
-					disabled: group.id !== currentFilter && currentFilter !== "all",
-				})}
 			/>
 			<text
 				className={classNames({
 					"group-label": true,
-					"inactive": id !== currentFilter && currentFilter !== "all",
-					disabled: group.id !== currentFilter && currentFilter !== "all",
 				})}
 				fill={foregroundColor}
 				textAnchor="middle"

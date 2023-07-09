@@ -11,6 +11,7 @@ export default function addCoordinatesToGroup(simulation: Simulation<Node, Link>
 
 			return {
 				...group,
+				active: isActive(group, nodes),
 				center: [
 					groupCenters[id].x,
 					groupCenters[id].y,
@@ -20,6 +21,11 @@ export default function addCoordinatesToGroup(simulation: Simulation<Node, Link>
 					.map<CoordinatePair>(({ x, y }: Node) => ([x, y])),
 			}
 		})
+}
+
+function isActive(group: RawGroup, nodes: Node[]) {
+	const groupNodes = nodes.filter(node => node.group === group.id)
+	return groupNodes.some(({ complete, in_progress }) => complete || in_progress)
 }
 
 function getCentroids(nodes: Node[]) {

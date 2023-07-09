@@ -10,6 +10,7 @@ export type RawGroup = {
 export type Group = RawGroup & {
 	points: CoordinatePair[];
 	center: CoordinatePair;
+	active: boolean;
 }
 
 export type RawNode = {
