@@ -76,9 +76,9 @@ export default function runSimulation({
 	})
 
 	const finalLinkForce = createLinkForce(fullLinks, {
-		linkDistance: 20,
-		groupLinkStrength: 1,
-		nonGrouplinkStrength: 0.6,
+		linkDistance: 30,
+		groupLinkStrength: 0.1,
+		nonGrouplinkStrength: 1,
 	})
 
 	simulation
@@ -95,6 +95,7 @@ export default function runSimulation({
 	do {
 		simulation.tick()
 		count--
+		constrainNodes(tickedSimulation)
 		groups = addCoordinatesToGroup(tickedSimulation, rawGroups)
 		attractGroups(tickedSimulation, groups)
 		shapeLinks(tickedSimulation, finalLinkForce, fullLinks)
@@ -104,6 +105,16 @@ export default function runSimulation({
 		simulation: simulation as Simulation<Node, Link>,
 		groups,
 	}
+}
+
+function constrainNodes(simulation: Simulation<Node, Link>) {
+	const boundary = 60
+
+	const nodes = simulation.nodes()
+	nodes.forEach(node => {
+		node.x = clampToInteger(node.x, -boundary, boundary)
+		node.y = clampToInteger(node.y, -boundary, boundary)
+	})
 }
 
 function initializeSimulation() {
@@ -120,4 +131,16 @@ function getUnique(array: unknown[]) {
 
 function deepClone<T>(object: T) {
 	return JSON.parse(JSON.stringify(object)) as T
+}
+
+function clampToInteger(value: number, lowerBound: number, upperBound: number) {
+	return Math.round(
+		Math.max(
+			Math.min(
+				value,
+				upperBound,
+			),
+			lowerBound,
+		)
+	)
 }

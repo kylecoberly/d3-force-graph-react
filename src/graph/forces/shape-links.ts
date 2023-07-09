@@ -3,7 +3,7 @@ import { HydratedLink, Link, Node, RawNode } from "../../types"
 
 // Normal state after alpha cutoff
 const alphaCutoff = 0.3
-const charge = -20 // Repel [-100,100] Attract
+const charge = -30 // Repel [-100,100] Attract
 const collision = 0
 
 export default function shapeLinks(
