@@ -12,14 +12,8 @@ const positionalForce = {
 	x: 0,
 	y: 0,
 }
-const charge = { // Attraction, -100 is repel, 100 is stacked
-	initial: -100,
-	final: -30,
-}
-const collision = {
-	initial: 0,
-	final: 0,
-}
+const initialCharge = -30
+const initialCollision = 0
 
 type SimulationParameters = {
 	nodes: RawNode[];
@@ -64,19 +58,20 @@ export default function runSimulation({
 			.find(({ id }) => id === nodeId) || nodes[0]
 		)
 
+	// Make this more efficient
 	const fullLinks = links.map<HydratedLink>(link => ({
 		source: normalizedNodes.find(node => node.id === link.source)!,
 		target: normalizedNodes.find(node => node.id === link.target)!,
 	}))
 
 	const initialLinkForce = createLinkForce(fullLinks, {
-		linkDistance: 30,
+		linkDistance: 10,
 		groupLinkStrength: 0.8,
 		nonGrouplinkStrength: 0,
 	})
 
 	const finalLinkForce = createLinkForce(fullLinks, {
-		linkDistance: 30,
+		linkDistance: 10,
 		groupLinkStrength: 0.1,
 		nonGrouplinkStrength: 1,
 	})
@@ -121,8 +116,8 @@ function initializeSimulation() {
 	return forceSimulation<RawNode>()
 		.force("x", forceX<RawNode>(positionalForce.x))
 		.force("y", forceY<RawNode>(positionalForce.y))
-		.force("charge", forceManyBody<RawNode>().strength(charge.initial))
-		.force("collision", forceCollide<RawNode>(collision.initial))
+		.force("charge", forceManyBody<RawNode>().strength(initialCharge))
+		.force("collision", forceCollide<RawNode>(initialCollision))
 }
 
 function getUnique(array: unknown[]) {

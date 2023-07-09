@@ -1,9 +1,6 @@
-@use "../colors.scss";
-
 #circle {
-	fill: colors.$grey-3;
-	stroke-width: 1px;
 	circle {
-		fill: colors.$white;
+		fill: inherit;
+		stroke: none;
 	}
 }

@@ -10,7 +10,8 @@ type Props = {
 }
 
 export default function Node({ node, links, zoomTo }: Props) {
-	const nodeDiameter = 4
+	const nodeDiameter = 3
+	const criticalNodeDiameter = 5
 	const linkCounts = getLinkCounts(links)
 	const { id, complete, in_progress, critical } = node
 	const formattedId = id.replace(/\s/g, "-")
@@ -32,13 +33,23 @@ export default function Node({ node, links, zoomTo }: Props) {
 			})}
 			onClickCapture={handleClick}
 		>
-			<use
-				width={nodeDiameter}
-				height={nodeDiameter}
-				href="#circle"
-				x={node.x - nodeDiameter / 2}
-				y={node.y - nodeDiameter / 2}
-			/>
+			{
+				node.critical
+					? <use
+						width={criticalNodeDiameter}
+						height={criticalNodeDiameter}
+						href="#outlined-circle"
+						x={node.x - criticalNodeDiameter / 2}
+						y={node.y - criticalNodeDiameter / 2}
+					/>
+					: <use
+						width={nodeDiameter}
+						height={nodeDiameter}
+						href="#circle"
+						x={node.x - nodeDiameter / 2}
+						y={node.y - nodeDiameter / 2}
+					/>
+			}
 			<text
 				className="label"
 				textAnchor="middle"

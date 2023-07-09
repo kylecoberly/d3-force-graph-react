@@ -1,0 +1,11 @@
+#outlined-circle {
+	.inner {
+		fill: inherit;
+		stroke: none;
+	}
+	.outer {
+		stroke: inherit;
+		stroke-width: 1px;
+		fill: none;
+	}
+}

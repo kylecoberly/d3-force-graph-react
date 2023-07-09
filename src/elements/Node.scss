@@ -6,35 +6,35 @@
 	.label {
 		fill: colors.$grey-3;
 		font-size: 0.1em;
-		stroke-width: 0;
-		&.disabled {
-			fill: colors.$grey-9;
-			font-size: 0.15em;
-		}
+		stroke: none;
 	}
 
 	&.closed {
-		stroke: colors.$grey-8;
-		stroke-width: 0.03em;
-		fill: colors.$grey-8;
+		stroke: colors.$grey-9;
+		stroke-width: 0.1px;
+		fill: colors.$grey-9;
+		.label {
+			stroke: none;
+			fill: colors.$grey-9;
+		}
 	}
 
 	&.open {
-		stroke: colors.$success-7;
-		stroke-width: 0.03em;
+		stroke: colors.$success-4;
+		stroke-width: 0.1px;
 		fill: colors.$success-7;
 	}
 
 	&.in-progress {
-		stroke: colors.$warning-6;
-		stroke-width: 0.03em;
-		fill: colors.$warning-6;
+		stroke: colors.$warning-4;
+		stroke-width: 0.1px;
+		fill: colors.$warning-7;
 	}
 
 	&.completed {
-		stroke: colors.$primary-5;
-		stroke-width: 0.03em;
-		fill: colors.$primary-5;
+		stroke: colors.$primary-4;
+		stroke-width: 0.1px;
+		fill: colors.$primary-7;
 	}
 
 	&.critical {

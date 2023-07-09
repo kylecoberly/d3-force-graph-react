@@ -9,8 +9,8 @@ import { useState } from 'react';
 import NodeDetails from './NodeDetails';
 import classNames from 'classnames';
 import Link from './elements/Link';
-import addCoordinatesToGroup from './graph/add-coordinates-to-group';
 import Group from './elements/Group';
+import OutlinedCircle from './elements/OutlinedCircle';
 
 const options = {
 	chart: {
@@ -122,6 +122,7 @@ function Graph({ filter, groups, links, simulation }: Props) {
 							>
 								<defs>
 									<Circle />
+									<OutlinedCircle />
 									<Arrow />
 								</defs>
 								<g

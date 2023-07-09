@@ -2,9 +2,9 @@ import { Simulation } from "d3"
 import { Node, RawLink, Group, Coordinate } from "../../types"
 
 const alphaCutoff = 0.3
-const attraction = 0.5
+const attraction = 1 - 0.5
 const cutoffTaperRate = 1.1
-const cutoffDistance = 25 // Ignore nodes closer than this
+const cutoffDistance = 27 // Ignore nodes closer than this
 
 // Moves each node closer to the center of its group
 export default function attractGroups(simulation: Simulation<Node, RawLink>, groups: Group[]) {
