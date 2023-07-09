@@ -1,28 +1,24 @@
 import { forceLink } from "d3"
-import { RawLink, Node } from "../../types"
-import options from "../options"
+import { HydratedLink, RawNode } from "../../types"
 
-const {
-	forces: {
-		link: {
-			distance: linkDistance,
-			strength: linkStrength,
-		},
-		group: {
-			link: {
-				strength: groupLinkStrength,
-			},
-		},
-	},
-} = options
+type Values = {
+	linkDistance: number;
+	nonGrouplinkStrength: number;
+	groupLinkStrength: number;
+}
 
-export default function createLinkForce() {
-	return forceLink<Node, RawLink>()
+export default function createLinkForce(
+	links: HydratedLink[], {
+		linkDistance,
+		groupLinkStrength,
+		nonGrouplinkStrength
+	}: Values) {
+	return forceLink<RawNode, HydratedLink>()
 		.id(({ id }) => id)
-		.distance(linkDistance.initial)
+		.distance(linkDistance)
 		.strength(({ source, target }) => (
-			source === target
-				? groupLinkStrength.initial
-				: linkStrength.initial
-		))
+			source.group === target.group
+				? groupLinkStrength
+				: nonGrouplinkStrength
+		)).links(links)
 }

@@ -27,12 +27,14 @@ export type Node = RawNode & Coordinate & {
 export type RawLink = {
 	source: string;
 	target: string;
-} & SimulationLinkDatum<Node>
+} & SimulationLinkDatum<RawNode>
 
-export type Link = {
-	source: Node;
-	target: Node;
-} & SimulationLinkDatum<Node>
+export type HydratedLink = {
+	source: RawNode;
+	target: RawNode;
+}
+
+export type Link = HydratedLink & SimulationLinkDatum<Node>
 
 export type Coordinate = {
 	x: number;

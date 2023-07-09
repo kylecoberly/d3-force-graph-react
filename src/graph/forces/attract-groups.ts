@@ -1,19 +1,12 @@
 import { Simulation } from "d3"
 import { Node, RawLink, Group, Coordinate } from "../../types"
-import simulationOptions from "../options"
 
-const {
-	simulation: {
-		alphaCutoff,
-	},
-	forces: {
-		group: {
-			charge: groupCharge,
-			distance: groupDistance,
-		},
-	},
-} = simulationOptions
+const alphaCutoff = 0.3
+const attraction = 0.5
+const cutoffTaperRate = 1.1
+const cutoffDistance = 50
 
+// Moves each node closer to the center of its group
 export default function attractGroups(simulation: Simulation<Node, RawLink>, groups: Group[]) {
 	const nodes = simulation.nodes()
 	const alpha = simulation.alpha()
@@ -32,13 +25,14 @@ export default function attractGroups(simulation: Simulation<Node, RawLink>, gro
 		}
 
 		const distanceToGroup = getDistance(node.groupCenter, { x: node.x, y: node.y })
+
 		const adjustedDistanceCutoff = (alpha < alphaCutoff)
-			? groupDistance.cutoff + (groupDistance.rate * (alphaCutoff - alpha))
-			: groupDistance.cutoff
-		const charge = 1 - groupCharge.initial
+			? cutoffDistance + (cutoffTaperRate * (alphaCutoff - alpha))
+			: cutoffDistance
+
 		if (distanceToGroup > adjustedDistanceCutoff) {
-			node.x = (node.x * charge) + (node.groupCenter.x * charge)
-			node.y = (node.y * charge) + (node.groupCenter.y * charge)
+			node.x = (node.x * attraction) + (node.groupCenter.x * attraction)
+			node.y = (node.y * attraction) + (node.groupCenter.y * attraction)
 		}
 	})
 }

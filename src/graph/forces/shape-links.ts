@@ -1,31 +1,23 @@
-import { forceManyBody, forceLink, forceCollide, Simulation } from "d3"
-import { RawLink, Node } from "../../types"
-import simulationOptions from "../options"
-const {
-	simulation: {
-		alphaCutoff,
-	},
-	forces: {
-		charge,
-		collision,
-		link: {
-			distance: linkDistance,
-			strength: linkStrength,
-		},
-	},
-} = simulationOptions
+import { forceManyBody, forceCollide, Simulation, ForceLink } from "d3"
+import { HydratedLink, Link, Node, RawNode } from "../../types"
 
-export default function shapeLinks(simulation: Simulation<Node, RawLink>) {
+// Normal state after alpha cutoff
+const alphaCutoff = 0.3
+const charge = -20 // Repel [-100,100] Attract
+const collision = 0
+
+export default function shapeLinks(
+	simulation: Simulation<Node, Link>,
+	linkForce: ForceLink<RawNode, HydratedLink>,
+	links: HydratedLink[],
+) {
 	const alpha = simulation.alpha()
 
 	if (alpha < alphaCutoff) {
 		simulation
 			.force("charge", forceManyBody()
-				.strength(charge.final)
-			).force("link", forceLink<Node, RawLink>()
-				.id(({ id }) => id)
-				.distance(linkDistance.final)
-				.strength(linkStrength.final)
-			).force("collision", forceCollide(collision.final))
+				.strength(charge)
+			).force("link", linkForce)
+			.force("collision", forceCollide(collision))
 	}
 }
