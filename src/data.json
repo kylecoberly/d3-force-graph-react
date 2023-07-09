@@ -219,7 +219,8 @@
 		{
 			"id": "Jest Spies",
 			"group": "jest",
-			"critical": true
+			"critical": true,
+			"complete": true
 		},
 		{
 			"id": "Jest Hooks",

@@ -140,6 +140,7 @@ function Graph({ filter, groups, links, simulation }: Props) {
 									{hydratedLinks.map(({ id, source, target }) => (
 										<Link
 											key={id}
+											links={hydratedLinks}
 											source={source}
 											target={target}
 										/>
@@ -148,7 +149,7 @@ function Graph({ filter, groups, links, simulation }: Props) {
 										<Node
 											key={node.id}
 											node={node}
-											links={links}
+											links={hydratedLinks}
 											zoomTo={zoomTo(zoomToElement)}
 										/>
 									))}

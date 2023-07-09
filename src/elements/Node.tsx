@@ -1,11 +1,10 @@
-import { RawLink, Node as NodeType, RawNode } from "../types";
+import { Link, Node as NodeType, RawNode } from "../types";
 import classnames from "classnames";
-import { MouseEvent } from "react";
 import "./Node.scss"
 
 type Props = {
 	node: NodeType;
-	links: RawLink[];
+	links: Link[];
 	zoomTo: (node: RawNode) => void;
 }
 
@@ -16,8 +15,22 @@ export default function Node({ node, links, zoomTo }: Props) {
 	const { id, complete, in_progress, critical } = node
 	const formattedId = id.replace(/\s/g, "-")
 
-	const handleClick = (event: MouseEvent) => {
-		zoomTo(node)
+	const feederNodes = links
+		.filter(link => link.target.id === node.id)
+		.map(link => link.source)
+
+	type NodeState = "open" | "opening" | "closed" | "complete" | "in_progress"
+	let nodeState: NodeState
+	if (complete) {
+		nodeState = "complete"
+	} else if (in_progress) {
+		nodeState = "in_progress"
+	} else if (feederNodes.every(node => node.complete) || feederNodes.length === 0) {
+		nodeState = "open"
+	} else if (feederNodes.some(node => node.complete)) {
+		nodeState = "opening"
+	} else {
+		nodeState = "closed"
 	}
 
 	return (
@@ -25,13 +38,14 @@ export default function Node({ node, links, zoomTo }: Props) {
 			id={formattedId}
 			className={classnames({
 				Node: true,
-				open: linkCounts[id]?.to === 0,
-				closed: linkCounts[id]?.to !== 0,
-				completed: complete,
-				"in-progress": in_progress,
+				open: nodeState === "open",
+				opening: nodeState === "opening",
+				closed: nodeState === "closed",
+				completed: nodeState === "complete",
+				"in-progress": nodeState === "in_progress",
 				critical: critical,
 			})}
-			onClickCapture={handleClick}
+			onClickCapture={() => zoomTo(node)}
 		>
 			{
 				node.critical
@@ -60,7 +74,7 @@ export default function Node({ node, links, zoomTo }: Props) {
 	)
 }
 
-function getLinkCounts(links: RawLink[]) {
+function getLinkCounts(links: Link[]) {
 	return links.reduce<
 		Record<
 			string,
@@ -70,10 +84,10 @@ function getLinkCounts(links: RawLink[]) {
 			}
 		>
 	>((counts, link) => {
-		counts[link.source] = counts[link.source] || { from: 0, to: 0 }
-		counts[link.target] = counts[link.target] || { from: 0, to: 0 }
-		counts[link.source].from = counts[link.source].from + 1
-		counts[link.target].to = counts[link.target].to + 1
+		counts[link.source.id] = counts[link.source.id] || { from: 0, to: 0 }
+		counts[link.target.id] = counts[link.target.id] || { from: 0, to: 0 }
+		counts[link.source.id].from = counts[link.source.id].from + 1
+		counts[link.target.id].to = counts[link.target.id].to + 1
 		return counts
 	}, {})
 }

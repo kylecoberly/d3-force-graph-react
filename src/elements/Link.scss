@@ -1,6 +1,22 @@
 @use "../colors.scss";
 
 .Link {
+	&.closed {
+		stroke: colors.$grey-9;
+	}
+	&.complete {
+		stroke: colors.$success-5;
+	}
+	&.in-progress {
+		stroke: colors.$warning-5;
+	}
+	&.open {
+		stroke: colors.$primary-5;
+	}
+	.line {
+		stroke: inherit;
+		stroke-width: 0.1px;
+	}
 	.ant {
 		stroke: colors.$primary-7 !important;
 		stroke-width: 0.1px;
