@@ -104,9 +104,12 @@ function Graph({ filter, groups, links, simulation }: Props) {
 								open,
 							})}
 						>
-							{
-								currentNode && <NodeDetails node={currentNode} />
-							}
+							{currentNode && (
+								<NodeDetails
+									node={currentNode}
+									close={() => setOpen(false)}
+								/>
+							)}
 						</div>
 						<TransformComponent>
 							<svg
@@ -163,10 +166,11 @@ function Graph({ filter, groups, links, simulation }: Props) {
 							viewBox="-10 -10 20 20"
 						>
 							<g>
-								<circle
-									cx={0}
-									cy={0}
-									r={4}
+								<rect
+									x={0}
+									y={0}
+									width={8}
+									height={8}
 									onClick={resetZoom(resetTransform)}
 								/>
 							</g>
