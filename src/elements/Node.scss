@@ -20,9 +20,9 @@
 	}
 
 	&.open {
-		stroke: colors.$primary-4;
-		stroke-width: 0.1px;
-		fill: colors.$primary-7;
+		stroke: colors.$success-5;
+		stroke-width: 0.05px;
+		fill: colors.$success-8;
 	}
 
 	&.in-progress {
@@ -31,10 +31,10 @@
 		fill: colors.$warning-7;
 	}
 
-	&.completed {
-		stroke: colors.$success-4;
+	&.complete {
+		stroke: colors.$primary-4;
 		stroke-width: 0.1px;
-		fill: colors.$success-7;
+		fill: colors.$primary-7;
 	}
 
 	&.opening {
@@ -44,6 +44,6 @@
 	}
 
 	&.critical {
-		stroke-width: 0;
+		stroke-width: 0.5px;
 	}
 }

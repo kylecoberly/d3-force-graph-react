@@ -41,7 +41,7 @@ export default function Node({ node, links, zoomTo }: Props) {
 				open: nodeState === "open",
 				opening: nodeState === "opening",
 				closed: nodeState === "closed",
-				completed: nodeState === "complete",
+				complete: nodeState === "complete",
 				"in-progress": nodeState === "in_progress",
 				critical: critical,
 			})}

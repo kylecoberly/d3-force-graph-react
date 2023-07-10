@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.scss";
-import data from "./data.json"
+import data from "./data";
 import Graph from './Graph';
 
 import runSimulation from "./graph/simulation"

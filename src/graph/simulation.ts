@@ -12,8 +12,8 @@ const positionalForce = {
 	x: 0,
 	y: 0,
 }
-const initialCharge = 0
-const initialCollision = 0
+const initialCharge = -90
+const initialCollision = 30
 
 type SimulationParameters = {
 	nodes: RawNode[];
@@ -65,15 +65,15 @@ export default function runSimulation({
 	}))
 
 	const initialLinkForce = createLinkForce(fullLinks, {
-		linkDistance: 30,
+		linkDistance: 1,
 		groupLinkStrength: 1,
 		nonGrouplinkStrength: 0,
 	})
 
 	const finalLinkForce = createLinkForce(fullLinks, {
-		linkDistance: 10,
-		groupLinkStrength: 0.8,
-		nonGrouplinkStrength: 0.5,
+		linkDistance: 30,
+		groupLinkStrength: 1,
+		nonGrouplinkStrength: 0.1,
 	})
 
 	simulation

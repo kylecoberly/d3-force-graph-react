@@ -1,10 +1,16 @@
-{
+const data = {
 	"groups": [
 		{
 			"id": "quality",
-			"label": "Quality",
+			"label": "Quality Concepts",
 			"background-color": "hsla(120, 50%, 50%, 0.1)",
 			"foreground-color": "hsla(120, 50%, 50%, 0.4)"
+		},
+		{
+			"id": "code-quality",
+			"label": "Code Quality",
+			"background-color": "hsla(150, 50%, 50%, 0.1)",
+			"foreground-color": "hsla(150, 50%, 50%, 0.4)"
 		},
 		{
 			"id": "storybook",
@@ -25,16 +31,16 @@
 			"foreground-color": "hsla(240, 50%, 50%, 0.4)"
 		},
 		{
-			"id": "browser-testing",
-			"label": "Browser Testing",
-			"background-color": "hsla(180, 50%, 50%, 0.1)",
-			"foreground-color": "hsla(180, 50%, 50%, 0.4)"
-		},
-		{
 			"id": "playwright",
 			"label": "Playwright",
 			"background-color": "hsla(210, 50%, 50%, 0.1)",
 			"foreground-color": "hsla(210, 50%, 50%, 0.4)"
+		},
+		{
+			"id": "agile",
+			"label": "Agile",
+			"background-color": "hsla(180, 50%, 50%, 0.1)",
+			"foreground-color": "hsla(180, 50%, 50%, 0.4)"
 		}
 	],
 	"nodes": [
@@ -46,19 +52,13 @@
 		},
 		{
 			"id": "Naming",
-			"group": "quality",
+			"group": "code-quality",
 			"critical": true,
 			"complete": true
 		},
 		{
 			"id": "Security",
-			"group": "quality"
-		},
-		{
-			"id": "Cyclomatic Complexity",
-			"group": "quality",
-			"critical": true,
-			"complete": true
+			"group": "code-quality"
 		},
 		{
 			"id": "Modularity",
@@ -70,51 +70,16 @@
 			"critical": true
 		},
 		{
-			"id": "CI",
-			"group": "quality"
-		},
-		{
-			"id": "CD",
-			"group": "quality"
+			"id": "CI/CD",
+			"group": "agile"
 		},
 		{
 			"id": "GitHub Actions",
-			"group": "quality"
+			"group": "agile"
 		},
 		{
-			"id": "Renaming",
-			"group": "quality",
-			"critical": true,
-			"in_progress": true
-		},
-		{
-			"id": "Refactoring Conditionals",
-			"group": "quality",
-			"critical": true
-		},
-		{
-			"id": "Refactoring Loops",
-			"group": "quality",
-			"critical": true
-		},
-		{
-			"id": "Refactoring Data Types",
-			"group": "quality",
-			"critical": true
-		},
-		{
-			"id": "Refactoring Modules",
-			"group": "quality",
-			"critical": true
-		},
-		{
-			"id": "Data Types",
-			"group": "quality",
-			"critical": true
-		},
-		{
-			"id": "Code Refactoring",
-			"group": "quality",
+			"id": "JavaScript Refactoring",
+			"group": "code-quality",
 			"critical": true
 		},
 		{
@@ -157,24 +122,15 @@
 		},
 		{
 			"id": "AXE",
-			"group": "quality"
-		},
-		{
-			"id": "JavaScript Performance Testing",
-			"group": "jest",
-			"critical": true
+			"group": "code-quality"
 		},
 		{
 			"id": "React Performance Testing",
-			"group": "browser-testing"
-		},
-		{
-			"id": "Advanced Browser Dev Tools",
-			"group": "browser-testing"
+			"group": "code-quality"
 		},
 		{
 			"id": "Browser Performance Testing",
-			"group": "browser-testing"
+			"group": "code-quality"
 		},
 		{
 			"id": "Jest Sockets",
@@ -204,12 +160,12 @@
 		},
 		{
 			"id": "Intro to Refactoring",
-			"group": "quality",
+			"group": "code-quality",
 			"critical": true
 		},
 		{
 			"id": "Big O",
-			"group": "quality"
+			"group": "code-quality"
 		},
 		{
 			"id": "Jest Mocks",
@@ -239,17 +195,8 @@
 			"group": "quality"
 		},
 		{
-			"id": "Testing Quadrants",
-			"group": "quality",
-			"critical": true
-		},
-		{
-			"id": "Acceptance Testing",
-			"group": "quality"
-		},
-		{
 			"id": "Testing Strategy",
-			"group": "quality"
+			"group": "agile"
 		},
 		{
 			"id": "Types",
@@ -346,14 +293,10 @@
 		},
 		{
 			"source": "Quality",
-			"target": "CI"
+			"target": "CI/CD"
 		},
 		{
-			"source": "CI",
-			"target": "CD"
-		},
-		{
-			"source": "CI",
+			"source": "CI/CD",
 			"target": "GitHub Actions"
 		},
 		{
@@ -362,7 +305,7 @@
 		},
 		{
 			"source": "Intro to Refactoring",
-			"target": "Renaming"
+			"target": "JavaScript Refactoring"
 		},
 		{
 			"source": "Quality",
@@ -374,11 +317,7 @@
 		},
 		{
 			"source": "Big O",
-			"target": "Refactoring Loops"
-		},
-		{
-			"source": "Big O",
-			"target": "Refactoring Data Types"
+			"target": "JavaScript Refactoring"
 		},
 		{
 			"source": "Setup TypeScript",
@@ -401,20 +340,8 @@
 			"target": "TypeScript Jest"
 		},
 		{
-			"source": "Code Refactoring",
+			"source": "JavaScript Refactoring",
 			"target": "Progressive Typing"
-		},
-		{
-			"source": "Data Types",
-			"target": "Refactoring Data Types"
-		},
-		{
-			"source": "Cyclomatic Complexity",
-			"target": "Refactoring Conditionals"
-		},
-		{
-			"source": "Refactoring Conditionals",
-			"target": "Code Refactoring"
 		},
 		{
 			"source": "Setup TypeScript",
@@ -425,32 +352,8 @@
 			"target": "Playwright Test"
 		},
 		{
-			"source": "Refactoring Loops",
-			"target": "Code Refactoring"
-		},
-		{
-			"source": "Refactoring Data Types",
-			"target": "Code Refactoring"
-		},
-		{
-			"source": "Quality",
-			"target": "Testing Quadrants"
-		},
-		{
-			"source": "Testing Quadrants",
-			"target": "Acceptance Testing"
-		},
-		{
-			"source": "Testing Quadrants",
-			"target": "Testing Strategy"
-		},
-		{
 			"source": "Testing Strategy",
 			"target": "Quality Evaluation"
-		},
-		{
-			"source": "Testing Quadrants",
-			"target": "Simple Jest Tests"
 		},
 		{
 			"source": "Simple Jest Tests",
@@ -573,24 +476,8 @@
 			"target": "TypeScript Object Types"
 		},
 		{
-			"source": "JavaScript Performance Testing",
-			"target": "Refactoring Data Types"
-		},
-		{
-			"source": "JavaScript Performance Testing",
-			"target": "Refactoring Loops"
-		},
-		{
 			"source": "Simple Jest Tests",
-			"target": "Refactoring Loops"
-		},
-		{
-			"source": "Simple Jest Tests",
-			"target": "Refactoring Conditionals"
-		},
-		{
-			"source": "Simple Jest Tests",
-			"target": "Refactoring Data Types"
+			"target": "JavaScript Refactoring"
 		},
 		{
 			"source": "Configure TypeScript",
@@ -609,24 +496,12 @@
 			"target": "Browser Performance Testing"
 		},
 		{
-			"source": "Renaming",
-			"target": "Code Refactoring"
-		},
-		{
-			"source": "Naming",
-			"target": "Renaming"
-		},
-		{
 			"source": "Quality",
 			"target": "Documentation"
 		},
 		{
 			"source": "Modularity",
-			"target": "Refactoring Modules"
-		},
-		{
-			"source": "Refactoring Modules",
-			"target": "Code Refactoring"
+			"target": "JavaScript Refactoring"
 		},
 		{
 			"source": "Jest Spies",
@@ -634,3 +509,5 @@
 		}
 	]
 }
+
+export default data

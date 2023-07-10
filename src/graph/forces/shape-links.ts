@@ -3,7 +3,7 @@ import { HydratedLink, Link, Node, RawNode } from "../../types"
 
 // Normal state after alpha cutoff
 const alphaCutoff = 0.3
-const charge = -30 // Repel [-100,100] Attract
+const charge = -80 // Repel [-100,100] Attract
 const collision = 10
 const forceBoundaries = [1, 1000]
 
