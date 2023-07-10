@@ -2,7 +2,9 @@
 
 .Link {
 	&.closed {
-		stroke: colors.$grey-9;
+		.line {
+			marker-mid: url(#arrowhead);
+		}
 	}
 	&.complete {
 		stroke: colors.$success-5;
@@ -12,6 +14,9 @@
 	}
 	&.open {
 		stroke: colors.$primary-5;
+	}
+	path {
+		fill: none;
 	}
 	.line {
 		stroke: inherit;

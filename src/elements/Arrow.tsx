@@ -14,7 +14,6 @@ export default function Arrow() {
 					L 5 5
 					z`
 				}
-				transform="translate(0,0)"
 			/>
 		</symbol>
 	)

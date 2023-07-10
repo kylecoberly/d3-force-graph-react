@@ -11,6 +11,7 @@ import classNames from 'classnames';
 import Link from './elements/Link';
 import Group from './elements/Group';
 import OutlinedCircle from './elements/OutlinedCircle';
+import ArrowHead from './elements/ArrowHead';
 
 const options = {
 	chart: {
@@ -127,6 +128,7 @@ function Graph({ filter, groups, links, simulation }: Props) {
 									<Circle />
 									<OutlinedCircle />
 									<Arrow />
+									<ArrowHead />
 								</defs>
 								<g
 									className="bounds"

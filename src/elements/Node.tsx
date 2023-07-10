@@ -10,7 +10,7 @@ type Props = {
 
 export default function Node({ node, links, zoomTo }: Props) {
 	const nodeDiameter = 3
-	const criticalNodeDiameter = 5
+	const criticalNodeDiameter = 4
 	const linkCounts = getLinkCounts(links)
 	const { id, complete, in_progress, critical } = node
 	const formattedId = id.replace(/\s/g, "-")

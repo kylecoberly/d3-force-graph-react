@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { getLinkLine } from "../graph/generate-mid-points";
 import { Link as LinkType, Node } from "../types";
 import "./Link.scss"
 
@@ -9,8 +10,7 @@ type Props = {
 }
 
 export default function Link({ source, target, links }: Props) {
-	const dx = target.x - source.x
-	const dy = target.y - source.y
+	const { dx, dy } = getDelta({ source, target })
 
 	const angle = toDegrees(Math.atan2(dy, dx))
 	const offset = {
@@ -18,11 +18,9 @@ export default function Link({ source, target, links }: Props) {
 		y: -1,
 	}
 
-	// What else targets the target node?
 	const feederNodes = links
 		.filter(link => link.target.id === target.id)
 		.map(({ source }) => source)
-	console.log(feederNodes, "feed into", target.id)
 
 	type LinkState = "open" | "closed" | "in_progress" | "complete"
 	let linkState: LinkState
@@ -49,7 +47,7 @@ export default function Link({ source, target, links }: Props) {
 			<path
 				className="line"
 				id={`link-${generateLinkId({ source, target })}`}
-				d={generateLinkPath({ source, target })}
+				d={generateLinkLine({ source, target })}
 			/>
 			{(linkState === "open") &&
 				<use
@@ -74,7 +72,14 @@ export default function Link({ source, target, links }: Props) {
 }
 
 export function generateLinkPath({ source, target }: { source: Node; target: Node; }) {
-	return `M${source.x},${source.y} ${target.x},${target.y}`
+	return `M${source.x},${source.y} L${target.x},${target.y}`
+}
+
+function getDelta({ source, target }: { source: Node; target: Node; }) {
+	return {
+		dx: target.x - source.x,
+		dy: target.y - source.y,
+	}
 }
 
 function generateLinkId({ source, target }: { source: Node; target: Node; }) {
@@ -83,4 +88,13 @@ function generateLinkId({ source, target }: { source: Node; target: Node; }) {
 
 function toDegrees(radians: number) {
 	return radians * (180 / Math.PI)
+}
+
+function generateLinkLine({ source, target }: LinkType) {
+	return getLinkLine({ source, target })
+		.reduce((path, point, index) => (
+			index % 2 === 0
+				? `${path} ${point}`
+				: `${path},${point}`
+		), "M")
 }
