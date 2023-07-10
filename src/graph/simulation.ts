@@ -12,7 +12,7 @@ const positionalForce = {
 	x: 0,
 	y: 0,
 }
-const initialCharge = -30
+const initialCharge = 0
 const initialCollision = 0
 
 type SimulationParameters = {
@@ -65,15 +65,15 @@ export default function runSimulation({
 	}))
 
 	const initialLinkForce = createLinkForce(fullLinks, {
-		linkDistance: 10,
-		groupLinkStrength: 0.8,
+		linkDistance: 30,
+		groupLinkStrength: 1,
 		nonGrouplinkStrength: 0,
 	})
 
 	const finalLinkForce = createLinkForce(fullLinks, {
 		linkDistance: 10,
-		groupLinkStrength: 0.1,
-		nonGrouplinkStrength: 1,
+		groupLinkStrength: 0.8,
+		nonGrouplinkStrength: 0.5,
 	})
 
 	simulation
@@ -93,7 +93,7 @@ export default function runSimulation({
 		constrainNodes(tickedSimulation)
 		groups = addCoordinatesToGroup(tickedSimulation, rawGroups)
 		attractGroups(tickedSimulation, groups)
-		shapeLinks(tickedSimulation, finalLinkForce, fullLinks)
+		shapeLinks(tickedSimulation, finalLinkForce)
 	} while (count > 0)
 
 	return {
